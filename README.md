@@ -21,7 +21,6 @@ python3 covid.py
   --output      出力先のディレクトリ
   --error_num   新規感染者数が0だった時の重症率の値
   --start_date  描画を開始する日付
-
 ```
 デフォルトでは，`--output`は`./images/`，`error_num`は100，`start_date`は2020/5/9です
 # 詳細
