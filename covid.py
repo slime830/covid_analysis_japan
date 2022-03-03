@@ -6,7 +6,6 @@ import shutil
 import japanize_matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
-from matplotlib import tight_layout
 from tqdm import tqdm
 
 
