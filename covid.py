@@ -2,6 +2,8 @@ import argparse
 import datetime
 import os
 import shutil
+import sys
+import re
 
 import japanize_matplotlib
 import matplotlib.pyplot as plt
@@ -72,7 +74,7 @@ def plot_data(data, prefecture, genre, axes, start_date):
         axes.set_ylim([0, 1])  # だいたいは(重症者数)<(新規感染者数)の為
     axes.grid()
     axes.set_title(
-        "2020-5-9から" + get_date() + "までの" + genre + "の推移(" + prefecture + ")",
+        start_date.replace("/", "-")+"から" + get_date() + "までの" + genre + "の推移(" + prefecture + ")",
         fontsize=18,
     )
     axes.set_xlabel("日付", fontsize=18)
@@ -87,7 +89,8 @@ def draw_graph(confirm, severe, rate, prefecture, output_dirname, start_date):
         plot_data(data, prefecture, genre, figure.add_subplot(subplot_num), start_date)
         subplot_num += 1
 
-    plt.savefig(f"{output_dirname}{prefecture}.png")
+    # plt.savefig(f"{output_dirname}{prefecture}.png")
+    plt.savefig(os.path.join(output_dirname,prefecture+".png"))
     plt.close()
 
 
@@ -106,8 +109,19 @@ def draw_and_save_all_graphs(
         rate = r_dict.get(prefecture)
         draw_graph(confirm, severe, rate, prefecture, output_dirname, start_date)
 
+def check_date(date_string):
+    pattern=r"202\d\/\d+\/\d+"
+    mutches=re.findall(pattern,date_string)
+    if len(mutches) != 1:
+        return False
+
+    return date_string == mutches[0]
 
 def main(args):
+    if not check_date(args.start_date):
+        print("format violation from start_date")
+        sys.exit()
+
     start_date = args.start_date
     error_num = args.error_num
     output_dirname = args.output

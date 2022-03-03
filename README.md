@@ -5,6 +5,8 @@ Windows10・Ubuntu(WSL)
 # 必要ライブラリ
 - python >= 3.8.0
 - matplotlib == 3.3.2
+- japanize_matplotlib == 1.1.3
+- japanize
 - pandas == 1.1.3
 - tqdm == 4.50.2
 # 実行方法
