@@ -1,14 +1,20 @@
 # 概要
 [厚生労働省が公開している新型コロナウィルス関連のオープンデータ](https://covid19.mhlw.go.jp/) を用いて，各都道府県（全国含む）の感染者数・重症者数・重症率のグラフを描くプログラム
-# 実行環境
+# 開発環境
+- OS: Ubuntu / Windows10 (Windows Subsystem for Linux)
+- 言語: Python 3.8.4
 Windows10・Ubuntu(WSL)
 # 必要ライブラリ
-- python >= 3.8.0
 - matplotlib == 3.3.2
 - japanize_matplotlib == 1.1.3
-- japanize
 - pandas == 1.1.3
 - tqdm == 4.50.2
+
+以下コマンドでインストール
+```bash
+pip install -r requirements.txt
+```
+
 # 実行方法
 - Windows
 ```
