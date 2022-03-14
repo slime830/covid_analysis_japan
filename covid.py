@@ -76,7 +76,7 @@ def plot_data(data, prefecture, genre, axes, start_date):
     axes.set_title(
         start_date.replace("/", "-")
         + "から"
-        + get_date()
+        + get_date().replace("/","-")
         + "までの"
         + genre
         + "の推移("
