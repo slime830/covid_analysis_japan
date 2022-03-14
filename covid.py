@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from tqdm import tqdm
 
+japanize_matplotlib.japanize()
+
 
 def get_data():
     # 日別の新規感染者データ
@@ -65,18 +67,16 @@ def get_date():
 
 def plot_data(data, prefecture, genre, axes, start_date):
     axes.plot(
-        pd.date_range(
-            start_date.replace("/", "-") + " 00:00:00", periods=len(data), freq="d"
-        ),
+        pd.date_range(start_date + " 00:00:00", periods=len(data), freq="d"),
         data,
     )
     if genre == "重症率":
         axes.set_ylim([0, 1])  # だいたいは(重症者数)<(新規感染者数)の為
     axes.grid()
     axes.set_title(
-        start_date.replace("/", "-")
+        start_date.replace("-", "/")
         + "から"
-        + get_date().replace("/","-")
+        + get_date().replace("-", "/")
         + "までの"
         + genre
         + "の推移("
