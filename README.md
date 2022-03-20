@@ -3,7 +3,6 @@
 # 開発環境
 - OS: Ubuntu / Windows10 (Windows Subsystem for Linux)
 - 言語: Python 3.8.4
-Windows10・Ubuntu(WSL)
 # 必要ライブラリ
 - matplotlib == 3.3.2
 - japanize_matplotlib == 1.1.3
