@@ -65,12 +65,12 @@ def get_date():
     return str(d.year) + "/" + str(d.month) + "/" + str(d.day)
 
 
-def plot_data(data, prefecture, genre, axes, start_date):
+def plot_data(data, prefecture, genre, axes, start_date, full_range):
     axes.plot(
         pd.date_range(start_date + " 00:00:00", periods=len(data), freq="d"),
         data,
     )
-    if genre == "重症率":
+    if genre == "重症率" and not full_range:
         axes.set_ylim([0, 1])  # だいたいは(重症者数)<(新規感染者数)の為
     axes.grid()
     axes.set_title(
@@ -88,12 +88,21 @@ def plot_data(data, prefecture, genre, axes, start_date):
     axes.set_ylabel(genre, fontsize=18)
 
 
-def draw_graph(confirm, severe, rate, prefecture, output_dirname, start_date):
+def draw_graph(
+    confirm, severe, rate, prefecture, output_dirname, start_date, full_range
+):
     subplot_num = 311
     figure = plt.figure(1, figsize=(20, 25))
     genres = ["新規感染者数", "重症者数", "重症率"]
     for data, genre in zip([confirm, severe, rate], genres):
-        plot_data(data, prefecture, genre, figure.add_subplot(subplot_num), start_date)
+        plot_data(
+            data,
+            prefecture,
+            genre,
+            figure.add_subplot(subplot_num),
+            start_date,
+            full_range,
+        )
         subplot_num += 1
 
     # plt.savefig(f"{output_dirname}{prefecture}.png")
@@ -102,7 +111,13 @@ def draw_graph(confirm, severe, rate, prefecture, output_dirname, start_date):
 
 
 def draw_and_save_all_graphs(
-    c_dict, s_dict, r_dict, prefectures, output_dirname, start_date="2020/5/9"
+    c_dict,
+    s_dict,
+    r_dict,
+    prefectures,
+    output_dirname,
+    start_date="2020/5/9",
+    full_range=False,
 ):
     if os.path.isdir(output_dirname):
         shutil.rmtree(output_dirname)
@@ -114,7 +129,9 @@ def draw_and_save_all_graphs(
         confirm = c_dict.get(prefecture)
         severe = s_dict.get(prefecture)
         rate = r_dict.get(prefecture)
-        draw_graph(confirm, severe, rate, prefecture, output_dirname, start_date)
+        draw_graph(
+            confirm, severe, rate, prefecture, output_dirname, start_date, full_range
+        )
 
 
 def check_date(date_string):
@@ -134,6 +151,7 @@ def main(args):
     start_date = args.start_date
     error_num = args.error_num
     output_dirname = args.output
+    full_range = args.full_range
 
     confirmed_df, severe_df, prefectures = get_data()
     confirmed_df, severe_df = data_processing(confirmed_df, severe_df, start_date)
@@ -141,7 +159,7 @@ def main(args):
         confirmed_df, severe_df, prefectures, error_num
     )
     draw_and_save_all_graphs(
-        confirms, severes, rates, prefectures, output_dirname, start_date
+        confirms, severes, rates, prefectures, output_dirname, start_date, full_range
     )
 
 
@@ -150,4 +168,7 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=str, help="出力先のディレクトリ", default="./images/")
     parser.add_argument("--error_num", type=int, help="新規感染者数が0だった時の重症率の値", default=100)
     parser.add_argument("--start_date", type=str, help="描画を開始する日付", default="2020/5/9")
+    parser.add_argument(
+        "--full_range", help="重症率のグラフを全範囲で（0~1.0の範囲に限定せず）描画する", action="store_true"
+    )
     main(parser.parse_args())
