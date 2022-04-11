@@ -1,1 +1,6 @@
-/*.ipynb
+/images/*.png
+!/images/ALL.png
+!/images/Tokyo.png
+!/images/Kanagawa.png
+!/images/Osaka.png
+!/images/Aichi.png
