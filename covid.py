@@ -37,7 +37,8 @@ def data_processing(confirmed_df, severe_df, start_date="2020/5/9"):
     confirmed_df = confirmed_df[
         confirmed_df.index >= list(confirmed_df.Date).index(start_date)
     ]
-    severe_df = severe_df[severe_df.index >= list(severe_df.Date).index(start_date)]
+    severe_df = severe_df[severe_df.index >=
+                          list(severe_df.Date).index(start_date)]
 
     return confirmed_df, severe_df
 
@@ -46,7 +47,8 @@ def cal_severe_rate(confirmed_df, severe_df, prefectures, error_num=100):
     confirms = {
         prefecture: list(confirmed_df[prefecture]) for prefecture in prefectures
     }
-    severes = {prefecture: list(severe_df[prefecture]) for prefecture in prefectures}
+    severes = {prefecture: list(severe_df[prefecture])
+               for prefecture in prefectures}
     rates = {
         prefecture: [
             severe / confirm if confirm != 0 else error_num
@@ -154,7 +156,8 @@ def main(args):
     full_range = args.full_range
 
     confirmed_df, severe_df, prefectures = get_data()
-    confirmed_df, severe_df = data_processing(confirmed_df, severe_df, start_date)
+    confirmed_df, severe_df = data_processing(
+        confirmed_df, severe_df, start_date)
     confirms, severes, rates = cal_severe_rate(
         confirmed_df, severe_df, prefectures, error_num
     )
@@ -165,9 +168,12 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=str, help="出力先のディレクトリ", default="./images/")
-    parser.add_argument("--error_num", type=int, help="新規感染者数が0だった時の重症率の値", default=100)
-    parser.add_argument("--start_date", type=str, help="描画を開始する日付", default="2020/5/9")
+    parser.add_argument("--output", type=str,
+                        help="出力先のディレクトリ", default="./images/")
+    parser.add_argument("--error_num", type=int,
+                        help="新規感染者数が0だった時の重症率の値", default=100)
+    parser.add_argument("--start_date", type=str,
+                        help="描画を開始する日付", default="2020/5/9")
     parser.add_argument(
         "--full_range", help="重症率のグラフを全範囲で（0~1.0の範囲に限定せず）描画する", action="store_true"
     )
